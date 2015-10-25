@@ -33,6 +33,7 @@ public class AppMain {
 		System.out.println("After deleting mkyong...");
 		userDAO.delete(1);
 		printAllUsers(userDAO);
+		System.out.println("Finished...");
 		
 	}
 
