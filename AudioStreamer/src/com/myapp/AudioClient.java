@@ -20,15 +20,14 @@ public class AudioClient {
 	public static void main(String[] args) throws IOException {
 
 		try {
-			Socket socket = new Socket("localhost", 9090);
+			Socket socket = new Socket(args[0], 9090);
 			System.out.println("server connected...");
-
+			socket.getOutputStream().write(args[1].getBytes());
 			AudioInputStream ais = AudioSystem
 					.getAudioInputStream(new BufferedInputStream(socket
 							.getInputStream()));
 			AudioFormat format = ais.getFormat();
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class,
-					format);
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 			final SourceDataLine line = (SourceDataLine) AudioSystem
 					.getLine(info);
 			line.open(format);

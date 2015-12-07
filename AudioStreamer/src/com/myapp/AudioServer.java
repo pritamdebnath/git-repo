@@ -1,7 +1,5 @@
 package com.myapp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,14 +8,6 @@ import java.net.Socket;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioServer {
 
@@ -42,12 +32,20 @@ public class AudioServer {
 	}
 
 	private static void processData(Socket s) throws IOException {
+		InputStream is = null;
 
-		try (FileInputStream fis = new FileInputStream(new File("D:\\song.wav"));
+		try (InputStream sis = s.getInputStream();
 				OutputStream os = s.getOutputStream();) {
+
+			byte songbuffer[] = new byte[20];
+			sis.read(songbuffer);
+			String songname = new String(songbuffer);
+
+			is = AudioServer.class.getResourceAsStream(songname.toLowerCase()
+					.trim() + ".wav");
 			byte buffer[] = new byte[2048];
 			int count;
-			while ((count = fis.read(buffer)) != -1) {
+			while ((count = is.read(buffer)) != -1) {
 				os.write(buffer, 0, count);
 				System.out.println("Streaming audio to client-->" + buffer[0]
 						+ "--" + buffer[1]);
@@ -56,6 +54,8 @@ public class AudioServer {
 			System.out.println("Streaming Completed");
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			is.close();
 		}
 	}
 }
