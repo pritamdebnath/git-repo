@@ -1,0 +1,6 @@
+AudioStreamer/.classpath
+AudioStreamer/.project
+AudioStreamer/.settings/org.eclipse.jdt.core.prefs
+AudioStreamer/bin/com/myapp/AudioClient.class
+AudioStreamer/bin/com/myapp/AudioServer$1.class
+AudioStreamer/bin/com/myapp/AudioServer.class
